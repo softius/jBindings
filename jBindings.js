@@ -22,9 +22,15 @@ var jBindings = {
     			})
     			observer.observe(dp, {attributes: true, childList: true, characterData: true, subtree: true})
     			if ('INPUT' == dp.tagName) {
-					dp.addEventListener('input', function() {
-    					cb(src)
-    				})
+    				if ('radio' == dp.type) {
+						dp.addEventListener('click', function() {
+	    					cb(src)
+	    				})
+    				} else {
+						dp.addEventListener('input', function() {
+	    					cb(src)
+	    				})
+    				}
     			} else if ('SELECT' == dp.tagName) {
     				dp.addEventListener('change', function() {
     					cb(src)
