@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="./../jBindings.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://getbootstrap.com/dist/css/bootstrap.css">
+	</head>
+	<body>
+	</body>
+	<head><div class="container">
+		<h1 id="welcome"></h1>
+		<p>Hi there, my name is <span data-fill="fullname">...</span>. I am <span data-fill="age">...</span> years old.</p>
+		<hr />
+		<div class="alert alert-info">Please fill all the fields below</div>
+		<form role="form">
+			<div class="form-group">
+    			<label for="fullname">Full name</label>
+    			<input type="text" class="form-control" id="fullname" placeholder="Enter your name">
+  			</div>
+  			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsSex" id="optionsSex1" value="M" checked>
+			    Male
+			  </label>
+			</div>
+			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsSex" id="optionsSex2" value="F">
+			    Female
+			  </label>
+			</div>
+			<div class="form-group">
+    			<label for="yob">Year of birth</label>
+    			<input type="text" class="form-control" id="yob" placeholder="">
+  			</div>
+		</form>
+		<script type="text/javascript">
+		$(function() {
+			$('#fullname').follow(fill_welcome, false)
+			$('input[name=optionsSex]').follow(fill_welcome, false)
+			$('#yob').follow(fill_age)
+		})
+
+		function fill_welcome()
+		{
+			var titles = {
+				'M': 'Mr',
+				'F': 'Mrs'
+			};
+
+			$('#welcome').html(titles[$('input[name=optionsSex]:checked').val()] +' '+ $('#fullname').val())
+			$('span[data-fill=fullname]').html($('#fullname').val())
+		}
+
+		function fill_age(item)
+		{
+			var y = $(item).val()
+			if (y.length != 4)
+				return
+
+			$('span[data-fill=age]').html((new Date().getFullYear()) - parseInt(y))
+		}
+		</script>
+	</div></head>
+</html
