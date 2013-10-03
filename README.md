@@ -1,2 +1,2 @@
-jBingings
+jBindings
 =========
