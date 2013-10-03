@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="https://rawgithub.com/wycats/handlebars.js/1.0.0/dist/handlebars.js"></script>
+		<script type="text/javascript" src="./../jBindings.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://getbootstrap.com/dist/css/bootstrap.css">
+	</head>
+	<body>
+	</body>
+	<head><div class="container">
+		<h1 id="welcome">
+			{{title}} {{fullname}}
+		</h1>
+		<script id="welcome-template" type="text/x-handlebars-template">
+  			{{title}} {{fullname}}
+		</script>
+		<p id="welcome-description">
+			<script id="welcome-description-template" type="text/x-handlebars-template">
+				Hi there, my name is {{fullname}}. I am {{age}} years old.
+			</script>
+		</p>
+		<hr />
+		<div class="alert alert-info">Please fill all the fields below</div>
+		<form role="form">
+			<div class="form-group">
+    			<label for="fullname">Full name</label>
+    			<input type="text" class="form-control" id="fullname" placeholder="Enter your name">
+  			</div>
+  			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsSex" id="optionsSex1" value="M" checked>
+			    Male
+			  </label>
+			</div>
+			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsSex" id="optionsSex2" value="F">
+			    Female
+			  </label>
+			</div>
+			<div class="form-group">
+    			<label for="yob">Year of birth</label>
+    			<input type="text" class="form-control" id="yob" placeholder="">
+  			</div>
+		</form>
+		<script type="text/javascript">
+		var Contact = {
+			fullname: null,
+			age: null, 
+			title: null
+		};
+
+		var welcome_tpl = Handlebars.compile($('#welcome-template').html())
+		var welcome_descr_tpl = Handlebars.compile($('#welcome-description-template').html())
+
+		$(function() {
+			$('#fullname').follow(fill_welcome, false)
+			$('input[name=optionsSex]').follow(fill_welcome, false)
+			$('#yob').follow(fill_age, false)
+
+			Contact.follow(function(item) {
+				$('#welcome').html(welcome_tpl(item))
+				$('#welcome-description').html(welcome_descr_tpl(item))
+			})
+		})
+
+		function fill_welcome()
+		{
+			var titles = {
+				'M': 'Mr',
+				'F': 'Mrs'
+			};
+
+			Contact.fullname = $('#fullname').val();
+			Contact.title = titles[$('input[name=optionsSex]:checked').val()]
+		}
+
+		function fill_age(item)
+		{
+			var y = $(item).val()
+			if (y.length != 4)
+				return
+
+			Contact.age = (new Date().getFullYear()) - parseInt(y)
+		}
+		</script>
+	</div></head>
+</html>
