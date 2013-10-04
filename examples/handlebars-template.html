@@ -10,11 +10,10 @@
 	</body>
 	<head><div class="container">
 		<h1 id="welcome">
-			{{title}} {{fullname}}
+			<script id="welcome-template" type="text/x-handlebars-template">
+	  			{{title}} {{fullname}}
+			</script>
 		</h1>
-		<script id="welcome-template" type="text/x-handlebars-template">
-  			{{title}} {{fullname}}
-		</script>
 		<p id="welcome-description">
 			<script id="welcome-description-template" type="text/x-handlebars-template">
 				Hi there, my name is {{fullname}}. I am {{age}} years old.
@@ -48,42 +47,40 @@
 		var Contact = {
 			fullname: null,
 			age: null, 
-			title: null
-		};
+			title: null,
+			setBirthYear: function(year) {
+				if (year.length != 4)
+            		return
+        		this.age = (new Date().getFullYear()) - parseInt(year)
+			},
+			setSex: function(sex) {
+				this.title = ('M' == sex) ? 'Mr' : 'Mrs'
+			}
+		}
 
 		var welcome_tpl = Handlebars.compile($('#welcome-template').html())
 		var welcome_descr_tpl = Handlebars.compile($('#welcome-description-template').html())
 
 		$(function() {
-			$('#fullname').follow(fill_welcome, false)
-			$('input[name=optionsSex]').follow(fill_welcome, false)
-			$('#yob').follow(fill_age, false)
+			$('#fullname').follow(function(item) { 
+				Contact.fullname = $(item).val()
+			}, false)
+
+			$('input[name=optionsSex]').follow(function(item) {
+				if ($(item).is(':checked')) {
+					Contact.setSex($(item).val())
+				}
+			}, false)
+			
+			$('#yob').follow(function(item) {
+				Contact.setBirthYear($(item).val())
+			}, false)
 
 			Contact.follow(function(item) {
 				$('#welcome').html(welcome_tpl(item))
 				$('#welcome-description').html(welcome_descr_tpl(item))
 			})
 		})
-
-		function fill_welcome()
-		{
-			var titles = {
-				'M': 'Mr',
-				'F': 'Mrs'
-			};
-
-			Contact.fullname = $('#fullname').val();
-			Contact.title = titles[$('input[name=optionsSex]:checked').val()]
-		}
-
-		function fill_age(item)
-		{
-			var y = $(item).val()
-			if (y.length != 4)
-				return
-
-			Contact.age = (new Date().getFullYear()) - parseInt(y)
-		}
 		</script>
 	</div></head>
 </html>
