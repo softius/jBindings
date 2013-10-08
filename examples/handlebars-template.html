@@ -11,12 +11,12 @@
 	<head><div class="container">
 		<h1 id="welcome">
 			<script id="welcome-template" type="text/x-handlebars-template">
-	  			{{title}} {{fullname}}
+	  			{{title}} {{fullname}} <small>since {{year}}</small>
 			</script>
 		</h1>
 		<p id="welcome-description">
 			<script id="welcome-description-template" type="text/x-handlebars-template">
-				Hi there, my name is {{fullname}}. I am {{age}} years old.
+				Hi there, my name is {{fullname}}. I am {{age}} years old.<br/>
 			</script>
 		</p>
 		<hr />
@@ -48,13 +48,18 @@
 			fullname: null,
 			age: null, 
 			title: null,
+			year: null,
 			setBirthYear: function(year) {
 				if (year.length != 4)
             		return
+            	this.year = year
         		this.age = (new Date().getFullYear()) - parseInt(year)
 			},
 			setSex: function(sex) {
 				this.title = ('M' == sex) ? 'Mr' : 'Mrs'
+			},
+			isAdult: function() {
+				return this.age > 0 && this.age <= 18
 			}
 		}
 
@@ -62,9 +67,7 @@
 		var welcome_descr_tpl = Handlebars.compile($('#welcome-description-template').html())
 
 		$(function() {
-			$('#fullname').follow(function(item) { 
-				Contact.fullname = $(item).val()
-			}, false)
+			$('#fullname').follow('value', Contact, 'fullname')
 
 			$('input[name=optionsSex]').follow(function(item) {
 				if ($(item).is(':checked')) {
