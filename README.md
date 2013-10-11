@@ -50,18 +50,25 @@ User.follow(function(item) {
 It is also possible also to follow HTML Elements. This include changes in attributes values.
 
 ``` JAVASCRIPT
-$('input#user-email').follow(item) {
+$('input#user-email').follow(function(item) {
   User.email = $(item).val()
+});
+```
+
+If jQuery is not available you can use vanilla JavaScript, even for HTML elements
+
+``` JAVASCRIPT
+document.getElementById('user-email').follow(function(item) {
+  User.email = item.value
 });
 ```
 
 Last, you can link two objects, in order to copy the value of one's property to second object's property. Hence, we can rewrite the above as below:
 
 ``` JAVASCRIPT
-$('input#user-email').follow('value', User', 'email')
+$('input#user-email').follow('value', User, 'email')
 ```
-
 
 Examples
 --------
-More exampldes, including integration with handlebars.js can be found under `examples` directory. 
+Examples including integration with [handlebarsjs.com](handlebars.js) can be found under `examples` directory. 
