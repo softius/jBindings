@@ -65,3 +65,9 @@ $('input#user-email').follow('value', User', 'email')
 Examples
 --------
 More exampldes, including integration with handlebars.js can be found under `examples` directory. 
+
+Todo
+----
+
+* Data bindings via HTML5 Custom Data Attributes
+* Data bindings for Model functions
